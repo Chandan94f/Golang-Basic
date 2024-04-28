@@ -1,0 +1,169 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+bool tcp(const pair<int,int> &a, const pair<int,int> &b)
+{
+    return (a.second > b.second);
+}
+
+
+int main() {
+
+    int t;
+    cin >> t;
+
+    while(t--) {
+
+        int n;
+        cin >> n;
+
+        vector<pair<int, int>> v1;
+        vector<pair<int, int>> v2;
+        vector<pair<int, int>> v3;
+
+        for(int i=0; i<n; i++) {
+            int tmp;
+            cin >> tmp;
+            v1.push_back({i, tmp});
+        }
+
+        for(int i=0; i<n; i++) {
+            int tmp;
+            cin >> tmp;
+            v2.push_back({i, tmp});
+        }
+
+        for(int i=0; i<n; i++) {
+            int tmp;
+            cin >> tmp;
+            v3.push_back({i, tmp});
+        }
+
+        sort(v1.begin(), v1.end(), tcp);
+        sort(v2.begin(), v2.end(), tcp);
+        sort(v3.begin(), v3.end(), tcp);
+
+        int a1 = v1[0].first, a2 = v1[1].first, a3 = v1[2].first;
+        int b1 = v2[0].first, b2 = v2[1].first, b3 = v2[2].first;
+        int c1 = v3[0].first, c2 = v3[1].first, c3 = v3[2].first;
+
+        int ans = 0;
+
+        if(a1 != b1 && b1 != c1 && c1 != a1)
+        {
+            ans = v1[0].second + v2[0].second + v3[0].second ;
+        }
+        else if(a1 == b1 && b1 != c1 )
+        {
+            
+            int t1 = v1[0].second + v2[1].second;
+            int t2 = v1[1].second + v2[0].second;
+
+            ans = v3[0].second + max(t1, t2);
+            
+        }
+        else if(a1 != b1 && b1 == c1 )
+        {
+            int t1 = v3[0].second + v2[1].second;
+            int t2 = v3[1].second + v2[0].second;
+
+            ans = v1[0].second + max(t1, t2);
+        }
+        else if(a1 != b1 && c1 == a1 )
+        {
+            int t1 = v1[0].second + v3[1].second;
+            int t2 = v1[1].second + v3[0].second;
+
+            ans = v2[0].second + max(t1, t2);
+        }
+
+        else{
+            if(a2 != b2 && b2 != c2 && c2 != a2)
+            {
+                int t1 = v1[0].second + v2[1].second + v3[1].second ;
+
+                int t2 = v1[1].second + v2[0].second + v3[1].second ;
+
+                int t3 = v1[1].second + v2[1].second + v3[0].second ;
+
+                ans = max(t1, max(t2, t3));
+            }
+
+            else if(a2 == b2 && b2 != c2 )
+            {
+                // if(v3[0].second > v1[0].second && v3[0].second > v2[0].second )
+                // {
+                    int t1 = v1[1].second + v2[2].second;
+                    int t2 = v1[2].second + v2[1].second;
+
+                    int tt1 = max(t1, t2) + v3[0].second;
+                // }
+                // else
+                // {
+                    int t3 = v1[0].second + v2[1].second;
+                    int t4 = v1[1].second + v2[0].second;
+
+                    int tt2 = max(t3, t4) + v3[1].second;
+                // }
+
+                ans = max(tt1, tt2);
+
+        
+            }
+
+            else if(a2 != b2 && b2 == c2 )
+            {
+                // if(v1[0].second > v2[0].second && v1[0].second > v3[0].second )
+                // {
+                    int t1 = v3[1].second + v2[2].second;
+                    int t2 = v3[2].second + v2[1].second;
+
+                    int tt1 = max(t1, t2) + v1[0].second;
+                // }
+                // else
+                // {
+                    int t3 = v3[0].second + v2[1].second;
+                    int t4 = v3[1].second + v2[0].second;
+
+                    int tt2 = max(t3, t4) + v1[1].second;
+                // }
+                ans = max(tt1, tt2);
+            }
+
+            else if(a2 != b2 && a2 == c2 )
+            {
+                // if(v2[0].second > v1[0].second && v2[0].second > v3[0].second )
+                // {
+                    int t1 = v1[1].second + v3[2].second;
+                    int t2 = v1[2].second + v3[1].second;
+
+                    int tt1 = max(t1, t2) + v2[0].second;
+                // }
+                // else
+                // {
+                    int t3 = v1[0].second + v3[1].second;
+                    int t4 = v1[1].second + v3[0].second;
+
+                    int tt2 = max(t3, t4) + v2[1].second;
+                // }
+
+                ans = max(tt1, tt2);
+            }
+
+            else{
+                int t1 = v1[0].second + max((v2[1].second + v3[2].second), (v2[2].second + v3[1].second));
+                int t2 = v2[0].second + max((v1[1].second + v3[2].second), (v1[2].second + v3[1].second));
+                int t3 = v3[0].second + max((v2[1].second + v1[2].second), (v2[2].second + v1[1].second));
+
+                ans = max(t1, max(t2, t3));
+            }
+        }
+
+        cout << ans << endl;
+
+
+    }
+    return 0;
+}
